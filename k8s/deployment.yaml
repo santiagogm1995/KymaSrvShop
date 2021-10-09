@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: java-rest
+  labels:
+    app: java-rest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: java-rest
+  template:
+    metadata:
+      labels:
+        app: java-rest
+    spec:
+      containers:
+        - image: santiagogm1995/java-rest:v3
+          imagePullPolicy: Always
+          name: java-rest
+          ports:
+            - name: http
+              containerPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: java-rest
+  labels:
+    app: java-rest
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8000
+      protocol: TCP
+  selector:
+    app: java-rest
